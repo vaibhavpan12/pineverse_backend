@@ -1,0 +1,133 @@
+# =========================
+# Dependencies
+# =========================
+node_modules/
+
+# =========================
+# Logs
+# =========================
+logs/
+*.log
+*.log.*
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# =========================
+# Lock Files (optional)
+# =========================
+yarn.lock
+
+# =========================
+# Environment Files
+# =========================
+.env
+.env.local
+.env.*.local
+
+# =========================
+# Expo / React Native
+# =========================
+.expo/
+.expo-shared/
+.expo2/
+.expo3/
+
+# =========================
+# Build / Cache
+# =========================
+dist/
+build/
+web-build/
+.tmp/
+.temp/
+.cache/
+
+# Metro Bundler
+.metro-health-check*
+
+# =========================
+# Android
+# =========================
+android/app/build/
+android/build/
+android/.gradle/
+android/.idea/
+android/local.properties
+android/.settings/
+android/gradle/
+android/captures/
+android/.gradletasknamecache
+android/.cxx/
+
+# =========================
+# iOS
+# =========================
+ios/build/
+ios/Pods/
+ios/DerivedData/
+ios/.idea/
+ios/.xcworkspace
+ios/*.xcuserstate
+ios/*.xcworkspace
+*.xcuserdatad
+
+# =========================
+# Bundle Output
+# =========================
+*.bundle
+*.map
+
+# =========================
+# IDEs
+# =========================
+.vscode/
+.idea/
+*.iml
+
+# =========================
+# OS Files
+# =========================
+.DS_Store
+.AppleDouble
+.LSOverride
+Thumbs.db
+Desktop.ini
+*~
+
+# =========================
+# ZIP / Backup Files
+# =========================
+*.zip
+*.tar.gz
+
+# =========================
+# Firebase Credentials
+# =========================
+utils/serviceAccountKey.json
+config/chatapp-2a76c-firebase-adminsdk-fbsvc-caf80ecfc7.json
+
+# =========================
+# Uploads / Temp Files
+# =========================
+uploads/
+public/uploads/
+
+# =========================
+# Database Files
+# =========================
+*.sqlite
+*.db
+
+# =========================
+# PM2
+# =========================
+.pm2/
+
+# =========================
+# Custom Ignore
+# =========================
+PineverseChatApp.zip
+
+utils/serviceAccountKey.json
