@@ -347,10 +347,64 @@ app.post("/updatePaymentStatus", async (req, res) => {
   }
 });
 
+// app.get("/getPaymentStatus", async (req, res) => {
+//   const { senderId, receiverId, bidId } = req.query; // ✅ bidId added
+//   try {
+//     // ✅ Base query
+//     const baseQuery = {
+//       $or: [
+//         { senderId, receiverId },
+//         { senderId: receiverId, receiverId: senderId },
+//       ],
+//     };
+
+//     // ✅ bidId available ho toh sirf us bid ka payment status fetch karo
+//     if (bidId) {
+//       baseQuery["meta.bidId"] = bidId;
+//     }
+
+//     const messages = await Message.find(baseQuery).select(
+//       "paymentStatus senderId receiverId meta -_id",
+//     );
+
+//     if (!messages.length)
+//       return res.status(404).json({ error: "No payment status found" });
+
+//     const senderToReceiver = messages.find(
+//       (m) => m.senderId === senderId && m.receiverId === receiverId,
+//     );
+//     const receiverToSender = messages.find(
+//       (m) => m.senderId === receiverId && m.receiverId === senderId,
+//     );
+
+//     res.json({
+//       senderToReceiver: senderToReceiver
+//         ? {
+//             senderId: senderToReceiver.senderId,
+//             receiverId: senderToReceiver.receiverId,
+//             paymentStatus: senderToReceiver.paymentStatus,
+//           }
+//         : null,
+//       receiverToSender: receiverToSender
+//         ? {
+//             senderId: receiverToSender.senderId,
+//             receiverId: receiverToSender.receiverId,
+//             paymentStatus: receiverToSender.paymentStatus,
+//           }
+//         : null,
+//     });
+//   } catch (err) {
+//     console.error("❌ Error fetching paymentStatus:", err.message);
+//     res.status(500).json({ error: "Failed to fetch paymentStatus" });
+//   }
+// });
+
+
+
+// vaibhav changes for chating 
 app.get("/getPaymentStatus", async (req, res) => {
-  const { senderId, receiverId, bidId } = req.query; // ✅ bidId added
+  const { senderId, receiverId, bidId } = req.query;
   try {
-    // ✅ Base query
     const baseQuery = {
       $or: [
         { senderId, receiverId },
@@ -358,7 +412,7 @@ app.get("/getPaymentStatus", async (req, res) => {
       ],
     };
 
-    // ✅ bidId available ho toh sirf us bid ka payment status fetch karo
+    // ✅ KEY FIX: bidId scope — purani bid ki payment na aaye
     if (bidId) {
       baseQuery["meta.bidId"] = bidId;
     }
@@ -367,8 +421,13 @@ app.get("/getPaymentStatus", async (req, res) => {
       "paymentStatus senderId receiverId meta -_id",
     );
 
-    if (!messages.length)
-      return res.status(404).json({ error: "No payment status found" });
+    // ✅ Agar koi message nahi mila is bidId ke liye — pending return karo
+    if (!messages.length) {
+      return res.json({
+        senderToReceiver: { senderId, receiverId, paymentStatus: "pending" },
+        receiverToSender: { senderId: receiverId, receiverId: senderId, paymentStatus: "pending" },
+      });
+    }
 
     const senderToReceiver = messages.find(
       (m) => m.senderId === senderId && m.receiverId === receiverId,
@@ -384,14 +443,14 @@ app.get("/getPaymentStatus", async (req, res) => {
             receiverId: senderToReceiver.receiverId,
             paymentStatus: senderToReceiver.paymentStatus,
           }
-        : null,
+        : { senderId, receiverId, paymentStatus: "pending" }, // ✅ null ki jagah pending
       receiverToSender: receiverToSender
         ? {
             senderId: receiverToSender.senderId,
             receiverId: receiverToSender.receiverId,
             paymentStatus: receiverToSender.paymentStatus,
           }
-        : null,
+        : { senderId: receiverId, receiverId: senderId, paymentStatus: "pending" }, // ✅ null ki jagah pending
     });
   } catch (err) {
     console.error("❌ Error fetching paymentStatus:", err.message);
